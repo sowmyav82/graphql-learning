@@ -1,0 +1,59 @@
+type Query {
+  users: [User!]!
+  user(id: ID!): User!
+  notifications(first: Int=3 start: Int=0): [Notification]!
+  servicesUsedByUser(first: Int=3 start: Int=0): [Service]!
+  bills(filter: BillFilter): [Bill]
+}
+
+type Mutation {
+  createUser(id: ID!, name: String!, email: String!, age: Int): User!
+  updateUser(id: ID!, name: String, email: String, age: Int): User!
+  deleteUser(id: ID!): User!
+}
+
+scalar Date
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  age: Int
+}
+
+type Notification {
+    type: String!
+    message: String!
+}
+
+type Service {
+    type: String!
+}
+
+input BillFilter {
+    status: BillStatus!
+    dueBetween: DateRange
+}
+
+input DateRange {
+    start: Date!
+    end: Date!
+}
+
+enum BillStatus {
+    PENDING
+    PROCESSING
+    SCHEDULED
+    CANCELED
+    BALANCED
+}
+
+type Bill {
+    id: ID!
+    status: BillStatus!
+    user: User!
+    billDate: Date!
+    dueDate: Date!
+    totalDue: Float!
+    note: String
+}

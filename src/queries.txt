@@ -1,0 +1,49 @@
+// Dashboard query
+query {
+  notifications(first: 3 start: 0) {
+    type
+    message
+  }
+  servicesUsedByUser(first: 4 start: 0) {
+    type
+  }
+}
+
+// Update only few attributes of User (post-signup scenario)
+mutation {
+  updateUser(id: 2, age: 26) {
+    id
+    name
+    email
+    age
+  }
+}
+// Bill summary
+query {
+  paidBills: bills (filter: {status: BALANCED}) {
+    dueDate,
+    status
+  },
+  pastDueBills: bills (filter: 
+    	{ status: PENDING, 
+        dueBetween: {
+            start: "1900-01-01",
+            end: "2019-05-17"
+        }
+      }) 
+  {
+    dueDate,
+    status
+  },
+  dueBills: bills(filter: 
+    	{ status: PENDING, 
+        dueBetween: {
+            start: "2019-05-18",
+            end: "2019-06-17"
+        }
+      }) 
+  {
+    dueDate,
+    status
+  },
+}
